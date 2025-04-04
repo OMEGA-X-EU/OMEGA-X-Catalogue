@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: provider-catalogue-configmap
+  namespace: provider-catalogue
+data:
+  API_PORT_EXPOSED: "5002"
+  PARENT_DOMAIN: ${PUBLIC_NODE_DOMAIN}
+  PARTICIPANT_NAME: ${PROJECT_NAME}-agent
+  PARTICIPANT_AGENT_HOST: ${PROJECT_NAME}-agent.user-agent.svc.cluster.local:5001
+  REDIS_HOST: redis://redis.federated-catalogue.svc.cluster.local:6379/0
+  REDIS_PUB_SUB_HOST: redis://redis.federated-catalogue.svc.cluster.local:6379/1
+---

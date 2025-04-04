@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+  name: ${PROJECT_NAME}-agent
+  namespace: user-agent
+spec:
+  rules:
+  - host: ${PROJECT_NAME}-agent.${PUBLIC_NODE_DOMAIN}
+    http:
+      paths:
+      - backend:
+          service:
+            name: ${PROJECT_NAME}-agent
+            port:
+              number: 5001
+        path: /
+        pathType: Prefix
+---
+

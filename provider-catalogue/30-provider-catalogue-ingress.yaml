@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+  name: prov-catalogue
+  namespace: provider-catalogue
+spec:
+  rules:
+  - host: provider-catalogue.${PUBLIC_NODE_DOMAIN}
+    http:
+      paths:
+      - backend:
+          service:
+            name: prov-catalogue
+            port:
+              number: 5002
+        path: /
+        pathType: Prefix
+---
+
+
+
+
+

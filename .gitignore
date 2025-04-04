@@ -1,0 +1,34 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+.idea
+
+# testing
+/coverage
+
+# production
+/build
+
+# Python cache and package files
+*__pycache__/*
+*.pyc
+*.egg-info
+
+# Environment files
+.env
+.env.*
+cicd-values.env
+
+# Wed dev
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# misc
+.DS_Store
+.vscode/settings.json
+tls.crt
+tls.key
+user-agent/cert.pem
+user-agent/key.pem

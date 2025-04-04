@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphdb-prov
+  namespace: provider-catalogue
+spec:
+  selector:
+    app: graphdb-prov
+  type: ClusterIP
+  ports:
+  - name: graphdb-prov
+    protocol: TCP
+    port: 7200
+    targetPort: 7200
+---
+

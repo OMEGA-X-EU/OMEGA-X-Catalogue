@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalogue
+  namespace: federated-catalogue
+spec:
+  selector:
+    app: catalogue
+  type: ClusterIP
+  ports:
+  - name: catalogue
+    protocol: TCP
+    port: 5002
+    targetPort: 5002
+---
+

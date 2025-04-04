@@ -1,0 +1,34 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prov-catalogue
+  namespace: provider-catalogue
+  labels:
+    app: prov-catalogue
+spec:
+  selector:
+    matchLabels:
+      app: prov-catalogue
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prov-catalogue
+    spec:
+      containers:
+      - name: prov-catalogue
+        image: registry.gitlab.com/gaia-x/data-infrastructure-federation-services/deployment-scenario/catalogue/provider-catalogue:${IMAGETAG_PROVIDER_CATALOGUE}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: provider-catalogue-configmap
+        - secretRef:
+            name: provider-catalogue-credentials
+        ports:
+        - containerPort: 5002
+          name:  prov-catalogue
+          protocol: TCP
+      restartPolicy: Always
+---
+

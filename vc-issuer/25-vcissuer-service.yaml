@@ -1,0 +1,17 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: vc-issuer
+  namespace: vc-issuer
+spec:
+  selector:
+    app: vc-issuer
+  type: ClusterIP
+  ports:
+  - name: vc-issuer
+    protocol: TCP
+    port: 5001
+    targetPort: 5001
+---
+

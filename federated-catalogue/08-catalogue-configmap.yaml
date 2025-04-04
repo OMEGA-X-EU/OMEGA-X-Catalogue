@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: catalogue-configmap
+  namespace: federated-catalogue
+data:
+  API_PORT_EXPOSED: "5002"
+  GRAPHDB_URL: http://graphdb.federated-catalogue.svc.cluster.local:7200
+  PARENT_DOMAIN: ${PUBLIC_NODE_DOMAIN}
+  PARTICIPANT_NAME: ${PROJECT_NAME}-agent
+  REDIS_HOST: redis://redis.federated-catalogue.svc.cluster.local:6379/0
+  REDIS_PUB_SUB_HOST: redis://redis.federated-catalogue.svc.cluster.local:6379/1
+  CES_URL: https://ces.${PUBLIC_NODE_DOMAIN}
+---
+

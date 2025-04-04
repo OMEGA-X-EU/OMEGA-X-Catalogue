@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web, websecure
+    traefik.ingress.kubernetes.io/router.tls.certresolver: default
+  name: ces
+  namespace: ces
+spec:
+  rules:
+  - host: ces.${PUBLIC_NODE_DOMAIN}
+    http:
+      paths:
+      - backend:
+          service:
+            name: ces
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+---

@@ -1,0 +1,17 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agent-cfg
+  namespace: user-agent
+data:
+  TLS_CERT_PATH: "/opt/participant-agent/creds/tls.crt"
+  PARTICIPANT_NAME: "${PROJECT_NAME}-agent"
+  PARENT_DOMAIN: "${PUBLIC_NODE_DOMAIN}"
+  PORT: "5001"
+  VC_ISSUER_URL: "http://vc-issuer.vc-issuer.svc.cluster.local:5001"
+  CATALOG_API_ENDPOINT: "http://catalogue.federated-catalogue.svc.cluster.local:5001"
+  PUBLIC_FOLDER_TO_EXPOSE: "/opt/participant-agent/public"
+  LOG_LEVEL: "DEBUG"
+---
+

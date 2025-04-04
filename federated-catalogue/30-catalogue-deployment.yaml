@@ -1,0 +1,38 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalogue
+  namespace: federated-catalogue
+  labels:
+    app: catalogue
+spec:
+  selector:
+    matchLabels:
+      app: catalogue
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: catalogue
+    spec:
+      containers:
+      - name: catalogue
+        image: registry.gitlab.com/gaia-x/data-infrastructure-federation-services/deployment-scenario/catalogue/federated-catalogue:${IMAGETAG_FEDERATED_CATALOGUE}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: catalogue-configmap
+        env:
+        - name: API_KEY_AUTHORIZED
+          valueFrom:
+            secretKeyRef:
+              name: catalogue-creds
+              key: keyauthorized
+        ports:
+        - containerPort: 5002
+          name:  catalogue
+          protocol: TCP
+      restartPolicy: Always
+---
+

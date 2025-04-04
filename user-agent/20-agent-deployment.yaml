@@ -1,0 +1,56 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  ${PROJECT_NAME}-agent
+  namespace: user-agent
+  labels:
+    app:  ${PROJECT_NAME}-agent
+spec:
+  selector:
+    matchLabels:
+      app: ${PROJECT_NAME}-agent
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  ${PROJECT_NAME}-agent
+    spec:
+      containers:
+      - name:  ${PROJECT_NAME}-agent
+        image:  registry.gitlab.com/gaia-x/data-infrastructure-federation-services/deployment-scenario/user-agent:1.1.1
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: agent-cfg
+        - secretRef:
+            name: agent-secrets
+        ports:
+        - containerPort:  5001
+          name:  prtcpnt-agent
+        volumeMounts:
+        - name: agent-cert
+          mountPath: /opt/participant-agent/creds/tls.crt
+          subPath: tls.crt
+          readOnly: true
+        - name: agent-cert
+          mountPath: /opt/participant-agent/creds/tls.key
+          subPath: tls.key
+          readOnly: true
+        - name: agent-pvc
+          mountPath: /opt/participant-agent/public
+      volumes:
+        - name: agent-cert
+          secret:
+            secretName: agent-cert
+            items:
+            - key: tls.crt
+              path: tls.crt
+            - key: tls.key
+              path: tls.key
+        - name: agent-pvc
+          persistentVolumeClaim:
+            claimName: agent-pvc
+      restartPolicy: Always
+---
+

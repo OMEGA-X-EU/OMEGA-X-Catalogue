@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ces-postgres
+  namespace: ces
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      hostname: postgres
+      containers:
+        - name: postgres
+          image: postgres:${POSTGRES_IMAGETAG}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+            - secretRef:
+                name: ces-postgres-secret
+          volumeMounts:
+            - name: ces-postgres-data
+              mountPath: /var/lib/postgresql/data
+          stdin: true
+          tty: true
+      restartPolicy: Always
+      volumes:
+        - name: ces-postgres-data
+          persistentVolumeClaim:
+            claimName: ces-postgres-data
+---
+

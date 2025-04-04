@@ -1,0 +1,34 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ces
+  namespace: ces
+  labels:
+    app: ces
+spec:
+  selector:
+    matchLabels:
+      app: ces
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ces
+    spec:
+      containers:
+      - name: ces
+        image: registry.gitlab.com/gaia-x/lab/credentials-events-service:${IMAGETAG_CES}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: ces-configmap
+        - secretRef:
+            name: ces-secret
+        ports:
+        - containerPort: 8080
+          name:  ces-api
+          protocol: TCP
+      restartPolicy: Always
+---
+

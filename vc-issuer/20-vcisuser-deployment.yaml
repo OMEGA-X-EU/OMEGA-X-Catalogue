@@ -1,0 +1,53 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  vc-issuer
+  namespace: vc-issuer
+  labels:
+    app:  vc-issuer
+spec:
+  selector:
+    matchLabels:
+      app: vc-issuer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  vc-issuer
+    spec:
+      containers:
+      - name:  vc-issuer
+        image:  registry.gitlab.com/gaia-x/data-infrastructure-federation-services/deployment-scenario/vc-issuer:${IMAGETAG_VC_ISSUER}
+        imagePullPolicy: Always
+        env:
+        - name: TLS_CERT_PATH
+          value: "/app/creds/tls.crt"
+        - name: PRIVATE_KEY_PATH
+          value: "/app/creds/tls.key"
+        - name: DID_WEB_ISSUER
+          value: "did:web:issuer.provider.${PUBLIC_NODE_DOMAIN}"
+        ports:
+        - containerPort:  5001
+          name:  vc-issuer
+        volumeMounts:
+        - name: issuer-cert
+          mountPath: /app/creds/tls.crt
+          subPath: tls.crt
+          readOnly: true
+        - name: issuer-cert
+          mountPath: /app/creds/tls.key
+          subPath: tls.key
+          readOnly: true
+      volumes:
+        - name: issuer-cert
+          secret:
+            secretName: issuer-cert
+            items:
+            - key: tls.crt
+              path: tls.crt
+            - key: tls.key
+              path: tls.key
+      restartPolicy: Always
+---
+

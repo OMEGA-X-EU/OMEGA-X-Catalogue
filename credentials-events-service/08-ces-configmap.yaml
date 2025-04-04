@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: ces-configmap
+  namespace: ces
+data:
+  trustedIssuersListUrl: https://registry.lab.gaia-x.eu/v1/api/trusted-issuers/compliance
+  trustedIssuersListDisabled: "true"
+  universalDidResolverUrl: https://dev.uniresolver.io/1.0/
+  dbHost: "postgres.ces.svc.cluster.local"
+  dbPort: "5432"
+  dbName: "cesdb"
+---

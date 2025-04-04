@@ -1,0 +1,46 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graphdb-prov
+  namespace: provider-catalogue
+  labels:
+    app: graphdb-prov
+spec:
+  selector:
+    matchLabels:
+      app: graphdb-prov
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: graphdb-prov
+    spec:
+      containers:
+      - name: graphdb-prov
+        image: khaller/graphdb-free:10.1.0
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          exec:
+            command:
+            - echo
+            - "true"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 6
+        ports:
+        - containerPort: 7200
+          name:  graphdb-prov
+          protocol: TCP
+        volumeMounts:
+        - name: graphdb-prov-catalogue-data-pvc
+          mountPath: /opt/graphdb/data/repositories
+      volumes: 
+        - name: graphdb-prov-catalogue-data-pvc
+          persistentVolumeClaim:
+            claimName: graphdb-prov-catalogue-data-pvc
+      restartPolicy: Always
+---
+

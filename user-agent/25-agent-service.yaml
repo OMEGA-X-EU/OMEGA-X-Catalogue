@@ -1,0 +1,17 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${PROJECT_NAME}-agent
+  namespace: user-agent
+spec:
+  selector:
+    app: ${PROJECT_NAME}-agent
+  type: ClusterIP
+  ports:
+  - name: ${PROJECT_NAME}-agent
+    protocol: TCP
+    port: 5001
+    targetPort: 5001
+---
+
